@@ -1,84 +1,93 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>패턴 입력</title>
-<style>
-    body, html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: '돋움체', sans-serif;
-    }
-
-    #pattern-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 90%;
-        max-width: 600px; /* 최대 너비 설정 */
-    }
-
-    #image {
-        max-width: 100%;
-        height: auto;
-        border: 1px solid #ccc; /* 이미지 경계 확인용 */
-    }
-
-    #text {
-        margin-top: 20px;
-        font-size: 18px;
-    }
-
-    #pattern {
-        display: grid;
-        grid-template-columns: repeat(3, 60px);
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .pattern-dot {
-        width: 60px; /* 크기 조정 */
-        height: 60px;
-        background-color: #ccc;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .selected {
-        background-color: #31353a;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>패턴 입력</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* 스크롤 방지 */
+        }
+        #pattern-container {
+            position: relative;
+            padding: 50px 20px; /* 상하 50px, 좌우 20px의 패딩 추가 */
+            box-sizing: border-box; /* 내부 여백을 포함한 요소의 크기를 설정 */
+            height: calc(100% - 140px); /* 전체 높이에서 상하 패딩 제외 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #pattern-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        #text {
+            position: absolute;
+            top: 250px; /* 이미지 컨테이너 위로부터의 거리 조절 */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: '돋움체';
+            font-size: 18px;
+        }
+        #pattern {
+            position: absolute;
+            top: 57.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid; /* 그리드로 변경 */
+            grid-template-columns: repeat(3, 1fr); /* 3개의 열 생성 */
+            gap: 10px;
+        }
+        .pattern-dot {
+            width: 14px; /* 패턴 점 크기를 조정 */
+            height: 14px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 30px;
+        }
+        .selected {
+            background-color: #31353a;
+        }
+        #image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 화면 비율에 맞게 이미지 조정 */
+        }
+        @media screen and (max-width: 600px) {
+            /* 모바일 화면에서의 스타일 조정이 필요할 경우 여기에 추가 */
+        }
+    </style>
 </head>
 <body>
-
 <div id="pattern-container">
-    <img id="image" src="phone.png" alt="Your Image" />
-    <div id="text">패턴을 입력하시오.</div>
-    <div id="pattern">
-        <div class="pattern-dot" data-index="1"></div>
-        <div class="pattern-dot" data-index="2"></div>
-        <div class="pattern-dot" data-index="3"></div>
-        <div class="pattern-dot" data-index="4"></div>
-        <div class="pattern-dot" data-index="5"></div>
-        <div class="pattern-dot" data-index="6"></div>
-        <div class="pattern-dot" data-index="7"></div>
-        <div class="pattern-dot" data-index="8"></div>
-        <div class="pattern-dot" data-index="9"></div>
+    <div id="pattern-wrapper">
+        <img id="image" src="phone.png" alt="Your Image">
+        <div id="text">패턴을 입력하시오.</div>
+        <div id="pattern">
+            <div class="pattern-dot" data-index="1"></div>
+            <div class="pattern-dot" data-index="2"></div>
+            <div class="pattern-dot" data-index="3"></div>
+            <div class="pattern-dot" data-index="4"></div>
+            <div class="pattern-dot" data-index="5"></div>
+            <div class="pattern-dot" data-index="6"></div>
+            <div class="pattern-dot" data-index="7"></div>
+            <div class="pattern-dot" data-index="8"></div>
+            <div class="pattern-dot" data-index="9"></div>
+        </div>
     </div>
 </div>
 
 <script>
     let selectedDots = [];
     let isDragging = false;
-    const correctPattern = [1, 2, 3, 5, 8, 7, 4];
+    const correctPattern = [1, 2, 3, 5, 8, 7, 4]; // 올바른 패턴 설정
 
     function toggleSelected(dot) {
         const index = parseInt(dot.getAttribute('data-index'));
@@ -88,54 +97,82 @@
         }
     }
 
-    function handleStart(event) {
+    function checkPattern() {
+        if (JSON.stringify(selectedDots) === JSON.stringify(correctPattern)) {
+            window.location.href = '/correct-pattern.html'; // 올바른 패턴 입력 시 새 페이지로 이동
+            window.location.href = '/correct-pattern.html'; 
+        } else {
+            // 올바르지 않은 패턴 입력 시 알림 표시
+            alert('패턴이 틀렸습니다.');
+            resetPattern(); // 패턴 초기화
+        }
+    }
+
+    function resetPattern() {
+        selectedDots = [];
+        document.querySelectorAll('.pattern-dot').forEach(dot => {
+            dot.classList.remove('selected');
+        });
+    }
+
+    document.querySelectorAll('.pattern-dot').forEach(dot => {
+        dot.addEventListener('mousedown', handleMouseDown);
+        dot.addEventListener('touchstart', handleTouchStart, {passive: false});
+    });
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchmove', handleTouchMove, {passive: false});
+    document.addEventListener('touchend', handleTouchEnd);
+
+    function handleMouseDown(event) {
         isDragging = true;
         const dot = event.target;
         toggleSelected(dot);
     }
 
-    function handleMove(event) {
-        if (!isDragging) return;
-        event.preventDefault();
-        const dot = document.elementFromPoint(event.clientX, event.clientY) || document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+    function handleMouseMove(event) {
+        if (isDragging) {
+            const dot = document.elementFromPoint(event.clientX, event.clientY);
+            if (dot && dot.classList.contains('pattern-dot')) {
+                toggleSelected(dot);
+            }
+        }
+    }
+
+    function handleMouseUp() {
+        if (isDragging) {
+            isDragging = false;
+            checkPattern();
+        }
+    }
+
+    function handleTouchStart(event) {
+        isDragging = true;
+        event.preventDefault(); // 스크롤 방지
+        const touch = event.touches[0];
+        const dot = document.elementFromPoint(touch.clientX, touch.clientY);
         if (dot && dot.classList.contains('pattern-dot')) {
             toggleSelected(dot);
         }
     }
-    
-    function handleEnd() {
-        isDragging = false;
-        checkPattern();
+
+    function handleTouchMove(event) {
+        if (isDragging) {
+            event.preventDefault(); // 스크롤 방지
+            const touch = event.touches[0];
+            const dot = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (dot && dot.classList.contains('pattern-dot')) {
+                toggleSelected(dot);
+            }
+        }
     }
 
-    document.querySelectorAll('.pattern-dot').forEach(dot => {
-        dot.addEventListener('mousedown', handleStart);
-        dot.addEventListener('touchstart', handleStart);
-    });
-
-    document.addEventListener('mousemove', handleMove);
-    document.addEventListener('touchmove', handleMove);
-    document.addEventListener('mouseup', handleEnd);
-    document.addEventListener('touchend', handleEnd);
-
-   function checkPattern() {
-        if (selectedDots.length === correctPattern.length) {
-            const isCorrect = selectedDots.every((value, index) => value === correctPattern[index]);
-            if (isCorrect) {
-                // 올바른 패턴일 경우 다음 페이지로 이동
-                window.location.href = "https://slashpage.com/e/%ED%81%AC%EC%94%AC%ED%81%AC%EC%94%AC-t92h9/ndvwx728gp449m3z6jpg";
-            } else {
-                // 잘못된 패턴일 경우 알림창 표시
-                alert("잘못된 패턴입니다. 다시 시도해주세요.");
-                resetPattern();
-            }
-            
-               function resetPattern() {
-        selectedDots.forEach(index => {
-            const dot = document.querySelector(`.pattern-dot[data-index="${index}"]`);
-            dot.classList.remove('selected');
-        });
-        selectedDots = [];
+    function handleTouchEnd() {
+        if (isDragging) {
+            isDragging = false;
+            checkPattern();
+        }
     }
 </script>
 </body>

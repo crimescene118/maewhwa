@@ -90,7 +90,8 @@
 
     function handleStart(event) {
         isDragging = true;
-        toggleSelected(event.target);
+        const dot = event.target;
+        toggleSelected(dot);
     }
 
     function handleMove(event) {
@@ -101,7 +102,7 @@
             toggleSelected(dot);
         }
     }
-
+    
     function handleEnd() {
         isDragging = false;
         checkPattern();
@@ -117,20 +118,24 @@
     document.addEventListener('mouseup', handleEnd);
     document.addEventListener('touchend', handleEnd);
 
-    function checkPattern() {
-        if (JSON.stringify(selectedDots) === JSON.stringify(correctPattern)) {
-            alert('패턴이 올바릅니다!');
-        } else {
-            alert('잘못된 패턴입니다.');
-        }
-        resetPattern();
-    }
-
-    function resetPattern() {
-        selectedDots = [];
-        document.querySelectorAll('.pattern-dot').forEach(dot => {
+   function checkPattern() {
+        if (selectedDots.length === correctPattern.length) {
+            const isCorrect = selectedDots.every((value, index) => value === correctPattern[index]);
+            if (isCorrect) {
+                // 올바른 패턴일 경우 다음 페이지로 이동
+                window.location.href = "https://slashpage.com/e/%ED%81%AC%EC%94%AC%ED%81%AC%EC%94%AC-t92h9/ndvwx728gp449m3z6jpg";
+            } else {
+                // 잘못된 패턴일 경우 알림창 표시
+                alert("잘못된 패턴입니다. 다시 시도해주세요.");
+                resetPattern();
+            }
+            
+               function resetPattern() {
+        selectedDots.forEach(index => {
+            const dot = document.querySelector(`.pattern-dot[data-index="${index}"]`);
             dot.classList.remove('selected');
         });
+        selectedDots = [];
     }
 </script>
 </body>

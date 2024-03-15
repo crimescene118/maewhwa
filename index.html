@@ -63,14 +63,22 @@
     <img id="image" src="phone.png" alt="Your Image" />
     <div id="text">패턴을 입력하시오.</div>
     <div id="pattern">
-        <!-- 패턴 도트들 -->
+        <div class="pattern-dot" data-index="1"></div>
+        <div class="pattern-dot" data-index="2"></div>
+        <div class="pattern-dot" data-index="3"></div>
+        <div class="pattern-dot" data-index="4"></div>
+        <div class="pattern-dot" data-index="5"></div>
+        <div class="pattern-dot" data-index="6"></div>
+        <div class="pattern-dot" data-index="7"></div>
+        <div class="pattern-dot" data-index="8"></div>
+        <div class="pattern-dot" data-index="9"></div>
     </div>
 </div>
-    
+
 <script>
     let selectedDots = [];
     let isDragging = false;
-    const correctPattern = [1, 2, 3, 5, 8, 7, 4]; // 사용자가 설정한 올바른 패턴
+    const correctPattern = [1, 2, 3, 5, 8, 7, 4];
 
     function toggleSelected(dot) {
         const index = parseInt(dot.getAttribute('data-index'));
@@ -80,70 +88,50 @@
         }
     }
 
-    function handleMouseDown(event) {
+    function handleStart(event) {
         isDragging = true;
-        const dot = event.target;
-        toggleSelected(dot);
+        toggleSelected(event.target);
     }
 
-    document.querySelectorAll('.pattern-dot').forEach(dot => {
-        dot.addEventListener('mousedown', handleMouseDown);
-        dot.addEventListener('touchstart', handleTouchStart, {passive: false}); // 터치 시작 이벤트 리스너 추가
-    });
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchmove', handleTouchMove, {passive: false}); // 터치 이동 이벤트 리스너 추가, 스크롤 방지
-    document.addEventListener('touchend', handleTouchEnd);
-
-    function handleTouchStart(event) {
-        isDragging = true;
-        event.preventDefault(); // 스크롤 방지
-        const touch = event.touches[0];
-        const dot = document.elementFromPoint(touch.clientX, touch.clientY);
+    function handleMove(event) {
+        if (!isDragging) return;
+        event.preventDefault();
+        const dot = document.elementFromPoint(event.clientX, event.clientY) || document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
         if (dot && dot.classList.contains('pattern-dot')) {
             toggleSelected(dot);
         }
     }
 
-    function handleTouchMove(event) {
-        if (isDragging) {
-            event.preventDefault(); //
- event.preventDefault(); // 스크롤 방지
-            const touch = event.touches[0];
-            const dot = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (dot && dot.classList.contains('pattern-dot')) {
-                toggleSelected(dot);
-            }
-        }
-    }
-
-   function handleTouchEnd() {
-    if (isDragging) {
-        isDragging = false;
-        checkPattern();
-    }
-}
-
-document.addEventListener('touchend', handleTouchEnd);
-
-
-    function handleMouseMove(event) {
-        if (isDragging) {
-            const dot = document.elementFromPoint(event.clientX, event.clientY);
-            if (dot && dot.classList.contains('pattern-dot')) {
-                toggleSelected(dot);
-            }
-        }
-    }
-
-    function handleMouseUp() {
+    function handleEnd() {
         isDragging = false;
         checkPattern();
     }
 
-    // checkPattern, resetPattern 함수는 그대로 유지
+    document.querySelectorAll('.pattern-dot').forEach(dot => {
+        dot.addEventListener('mousedown', handleStart);
+        dot.addEventListener('touchstart', handleStart);
+    });
 
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('touchmove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchend', handleEnd);
+
+    function checkPattern() {
+        if (JSON.stringify(selectedDots) === JSON.stringify(correctPattern)) {
+            alert('패턴이 올바릅니다!');
+        } else {
+            alert('잘못된 패턴입니다.');
+        }
+        resetPattern();
+    }
+
+    function resetPattern() {
+        selectedDots = [];
+        document.querySelectorAll('.pattern-dot').forEach(dot => {
+            dot.classList.remove('selected');
+        });
+    }
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>진손님배경</title>
+<title>최만신배경</title>
 <style>
   body, html {
     margin: 0;
@@ -16,7 +16,7 @@
     width: 100%;
     height: 0;
     padding-bottom:  244.4%; /* 이미지의 높이/너비 비율에 맞춤, 예: 2532/1170 */
-    background-image: url('진손님배경.jpg'); /* 배경 이미지 경로 */
+    background-image: url('최만신배경.jpg'); /* 배경 이미지 경로 */
     background-size: cover;
     background-position: center;
   }
@@ -29,26 +29,16 @@
     height: calc(129 / 2640 * 100%);
   }
 
-  .button1 {
-  top: calc(1872 / 2640 * 100%);
-  left: calc(99 / 1080 * 100%);
-}
-
-.button2 {
+.button1 {
   top: calc(1872 / 2640 * 100%);
   left: calc(348 / 1080 * 100%);
 }
 
-.button3 {
-  top: calc(1872 / 2640 * 100%);
-  left: calc(597 / 1080 * 100%);
-}
-
-.button4 {
+.button2 {
   top: calc(2307 / 2640 * 100%);
   left: calc(99 / 1080 * 100%);
 }
-.button5 {
+.button3 {
   top: calc(2307 / 2640 * 100%);
   left: calc(597 / 1080 * 100%);
 }
@@ -107,41 +97,35 @@
 <body>
 
 <div class="background" id="background">
-  <button class="button button1" onclick="window.open('naver/naver.html', '_self')"></button>
-  <button class="button button2" onclick="window.open('kakao/kakao.html', '_self')"></button>
-  <button class="button button3" onclick="showImage()"></button>
-  <button class="button button4" onclick="showAnotherImage()"></button>
-  <button class="button button5" onclick="window.open('msg/msg.html', '_self')"></button>
+  <button class="button button1" onclick="window.open('kakao/kakao.html', '_self')"></button>
+  <button class="button button2" onclick="showImage()"></button>
+  <button class="button button3" onclick="showAnotherImage()"></button>
   <button class="backButton" id="backButton" onclick="goBack()"></button>
 </div>
 
 <script>
-let previousImage = '진손님배경.jpg'; // Initial background image
+let previousImage = '최만신배경.jpg'; // Initial background image
 
 function showImage() {
   const background = document.getElementById('background');
-  background.style.backgroundImage = "url('진손님카카오맵.png')";
+  background.style.backgroundImage = "url('최만신전화.png')";
   background.classList.add('fadeIn'); // 애니메이션 클래스 추가
   document.getElementById('backButton').style.display = 'block';
   document.getElementById('backNewButton').style.display = 'block';// 뒤로가기 버튼 표시
   document.querySelector('.button1').style.display = 'none';
   document.querySelector('.button2').style.display = 'none';
   document.querySelector('.button3').style.display = 'none';
-  document.querySelector('.button4').style.display = 'none';
-  document.querySelector('.button5').style.display = 'none';
 }
 
 function showAnotherImage() {
   const background = document.getElementById('background');
-  background.style.backgroundImage = "url('진손님전화.jpg')";
+  background.style.backgroundImage = "url('최만신문자.png')";
   background.classList.add('fadeIn'); // 애니메이션 클래스 추가
   document.getElementById('backButton').style.display = 'block'; // 뒤로가기 버튼 표시
   document.getElementById('backNewButton').style.display = 'block';
   document.querySelector('.button1').style.display = 'none';
   document.querySelector('.button2').style.display = 'none';
   document.querySelector('.button3').style.display = 'none';
-  document.querySelector('.button4').style.display = 'none';
-  document.querySelector('.button5').style.display = 'none';
 }  
   
 function goBack() {
@@ -153,8 +137,6 @@ function goBack() {
   document.querySelector('.button1').style.display = 'block';
   document.querySelector('.button2').style.display = 'block';
   document.querySelector('.button3').style.display = 'block';
-  document.querySelector('.button4').style.display = 'block';
-  document.querySelector('.button5').style.display = 'block';
 }
 </script>
 

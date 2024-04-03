@@ -1,179 +1,162 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>패턴 입력</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden; /* 스크롤 방지 */
-        }
-        #pattern-container {
-            position: relative;
-            padding: 50px 20px; /* 상하 50px, 좌우 20px의 패딩 추가 */
-            box-sizing: border-box; /* 내부 여백을 포함한 요소의 크기를 설정 */
-            height: calc(100% - 140px); /* 전체 높이에서 상하 패딩 제외 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #pattern-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        #text {
-            position: absolute;
-            top: 250px; /* 이미지 컨테이너 위로부터의 거리 조절 */
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: '돋움체';
-            font-size: 18px;
-        }
-        #pattern {
-            position: absolute;
-            top: 57.5%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: grid; /* 그리드로 변경 */
-            grid-template-columns: repeat(3, 1fr); /* 3개의 열 생성 */
-            gap: 10px;
-        }
-        .pattern-dot {
-            width: 14px; /* 패턴 점 크기를 조정 */
-            height: 14px;
-            background-color: #ccc;
-            border-radius: 50%;
-            cursor: pointer;
-            margin: 30px;
-        }
-        .selected {
-            background-color: #31353a;
-        }
-        #image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 화면 비율에 맞게 이미지 조정 */
-        }
-        @media screen and (max-width: 600px) {
-            /* 모바일 화면에서의 스타일 조정이 필요할 경우 여기에 추가 */
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>진손님배경</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .background {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom:  244.4%; /* 이미지의 높이/너비 비율에 맞춤, 예: 2532/1170 */
+    background-image: url('진손님배경.jpg'); /* 배경 이미지 경로 */
+    background-size: cover;
+    background-position: center;
+  }
+  .button {
+    position: absolute;
+    background-color: transparent; /* 투명한 배경 */
+    border: none; /* 테두리 없음 */
+    cursor: pointer;
+    width: calc(129 / 1080 * 100%);
+    height: calc(129 / 2640 * 100%);
+  }
+
+  .button1 {
+  top: calc(1872 / 2640 * 100%);
+  left: calc(99 / 1080 * 100%);
+}
+
+.button2 {
+  top: calc(1872 / 2640 * 100%);
+  left: calc(348 / 1080 * 100%);
+}
+
+.button3 {
+  top: calc(1872 / 2640 * 100%);
+  left: calc(597 / 1080 * 100%);
+}
+
+.button4 {
+  top: calc(2307 / 2640 * 100%);
+  left: calc(99 / 1080 * 100%);
+}
+.button5 {
+  top: calc(2307 / 2640 * 100%);
+  left: calc(597 / 1080 * 100%);
+}
+
+  .backButton {
+    position: absolute;
+    width: calc(300 / 1080 * 100%);
+    height: calc(78 / 2640 * 100%);
+    top: calc(2538 / 2640 * 100%);
+    left: calc(726 / 1080 * 100%);
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer;
+    display: none; /* Initially hidden */
+  }
+    .backNewButton {
+    position: absolute;
+    width: calc(300 / 1080 * 100%);
+    height: calc(78 / 2640 * 100%);
+    top: calc(2538 / 2640 * 100%);
+    left: calc(390 / 1080 * 100%);
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer;
+    display: none; /* Initially hidden */
+  }
+
+  @media (max-width: 768px) {
+    .background {
+      padding-bottom: 244.4%;
+    }
+    .button {
+    }
+    .backButton {
+    }
+     .backNewButton {
+    }
+
+    @keyframes fadeInAnimation {
+  from {
+    opacity: 0;
+    transform: scale(0.5); /* 시작 시 50% 크기 */
+  }
+  to {
+    opacity: 1;
+    transform: scale(1); /* 종료 시 원래 크기 */
+  }
+}
+
+.fadeIn {
+  animation: fadeInAnimation 1s ease-out forwards;
+}
+  }
+</style>
 </head>
 <body>
-<div id="pattern-container">
-    <div id="pattern-wrapper">
-        <img id="image" src="phone.png" alt="Your Image">
-        <div id="text">패턴을 입력하시오.</div>
-        <div id="pattern">
-            <div class="pattern-dot" data-index="1"></div>
-            <div class="pattern-dot" data-index="2"></div>
-            <div class="pattern-dot" data-index="3"></div>
-            <div class="pattern-dot" data-index="4"></div>
-            <div class="pattern-dot" data-index="5"></div>
-            <div class="pattern-dot" data-index="6"></div>
-            <div class="pattern-dot" data-index="7"></div>
-            <div class="pattern-dot" data-index="8"></div>
-            <div class="pattern-dot" data-index="9"></div>
-        </div>
-    </div>
+
+<div class="background" id="background">
+  <button class="button button1" onclick="window.open('naver/naver.html', '_self')"></button>
+  <button class="button button2" onclick="window.open('kakao/kakao.html', '_self')"></button>
+  <button class="button button3" onclick="showImage()"></button>
+  <button class="button button4" onclick="showAnotherImage()"></button>
+  <button class="button button5" onclick="window.open('msg/msg.html', '_self')"></button>
+  <button class="backButton" id="backButton" onclick="goBack()"></button>
 </div>
 
 <script>
-    let selectedDots = [];
-    let isDragging = false;
-    const correctPattern = [1, 2, 3, 5, 8, 7, 4]; // 올바른 패턴 설정
+let previousImage = '진손님배경.jpg'; // Initial background image
 
-    function toggleSelected(dot) {
-        const index = parseInt(dot.getAttribute('data-index'));
-        if (!selectedDots.includes(index)) {
-            selectedDots.push(index);
-            dot.classList.add('selected');
-        }
-    }
+function showImage() {
+  const background = document.getElementById('background');
+  background.style.backgroundImage = "url('진손님카카오맵.png')";
+  background.classList.add('fadeIn'); // 애니메이션 클래스 추가
+  document.getElementById('backButton').style.display = 'block';
+  document.getElementById('backNewButton').style.display = 'block';// 뒤로가기 버튼 표시
+  document.querySelector('.button1').style.display = 'none';
+  document.querySelector('.button2').style.display = 'none';
+  document.querySelector('.button3').style.display = 'none';
+  document.querySelector('.button4').style.display = 'none';
+  document.querySelector('.button5').style.display = 'none';
+}
 
-    function checkPattern() {
-        if (JSON.stringify(selectedDots) === JSON.stringify(correctPattern)) {
-            window.location.href = '/correct-pattern.html'; // 올바른 패턴 입력 시 새 페이지로 이동
-            window.location.href = '/correct-pattern.html'; 
-        } else {
-            // 올바르지 않은 패턴 입력 시 알림 표시
-            alert('패턴이 틀렸습니다.');
-            resetPattern(); // 패턴 초기화
-        }
-    }
-
-    function resetPattern() {
-        selectedDots = [];
-        document.querySelectorAll('.pattern-dot').forEach(dot => {
-            dot.classList.remove('selected');
-        });
-    }
-
-    document.querySelectorAll('.pattern-dot').forEach(dot => {
-        dot.addEventListener('mousedown', handleMouseDown);
-        dot.addEventListener('touchstart', handleTouchStart, {passive: false});
-    });
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchmove', handleTouchMove, {passive: false});
-    document.addEventListener('touchend', handleTouchEnd);
-
-    function handleMouseDown(event) {
-        isDragging = true;
-        const dot = event.target;
-        toggleSelected(dot);
-    }
-
-    function handleMouseMove(event) {
-        if (isDragging) {
-            const dot = document.elementFromPoint(event.clientX, event.clientY);
-            if (dot && dot.classList.contains('pattern-dot')) {
-                toggleSelected(dot);
-            }
-        }
-    }
-
-    function handleMouseUp() {
-        if (isDragging) {
-            isDragging = false;
-            checkPattern();
-        }
-    }
-
-    function handleTouchStart(event) {
-        isDragging = true;
-        event.preventDefault(); // 스크롤 방지
-        const touch = event.touches[0];
-        const dot = document.elementFromPoint(touch.clientX, touch.clientY);
-        if (dot && dot.classList.contains('pattern-dot')) {
-            toggleSelected(dot);
-        }
-    }
-
-    function handleTouchMove(event) {
-        if (isDragging) {
-            event.preventDefault(); // 스크롤 방지
-            const touch = event.touches[0];
-            const dot = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (dot && dot.classList.contains('pattern-dot')) {
-                toggleSelected(dot);
-            }
-        }
-    }
-
-    function handleTouchEnd() {
-        if (isDragging) {
-            isDragging = false;
-            checkPattern();
-        }
-    }
+function showAnotherImage() {
+  const background = document.getElementById('background');
+  background.style.backgroundImage = "url('진손님전화.jpg')";
+  background.classList.add('fadeIn'); // 애니메이션 클래스 추가
+  document.getElementById('backButton').style.display = 'block'; // 뒤로가기 버튼 표시
+  document.getElementById('backNewButton').style.display = 'block';
+  document.querySelector('.button1').style.display = 'none';
+  document.querySelector('.button2').style.display = 'none';
+  document.querySelector('.button3').style.display = 'none';
+  document.querySelector('.button4').style.display = 'none';
+  document.querySelector('.button5').style.display = 'none';
+}  
+  
+function goBack() {
+  const background = document.getElementById('background');
+  background.style.backgroundImage = "url('" + previousImage + "')";
+  background.classList.remove('fadeIn'); // 애니메이션 클래스 제거
+  document.getElementById('backButton').style.display = 'none'; // 뒤로가기 버튼 숨김
+  document.getElementById('backNewButton').style.display = 'none';
+  document.querySelector('.button1').style.display = 'block';
+  document.querySelector('.button2').style.display = 'block';
+  document.querySelector('.button3').style.display = 'block';
+  document.querySelector('.button4').style.display = 'block';
+  document.querySelector('.button5').style.display = 'block';
+}
 </script>
+
 </body>
 </html>
